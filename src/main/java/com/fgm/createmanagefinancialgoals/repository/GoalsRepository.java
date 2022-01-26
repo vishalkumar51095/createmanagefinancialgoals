@@ -8,5 +8,8 @@ import java.util.List;
 
 public interface GoalsRepository extends JpaRepository<Goals,Integer> {
     List<Goals> findByUserName(String userName);
+    //List<Goals> findByGoalsAnd(String goal);
+    List<Goals> findByUserNameAndGoal(String userName, String goal);
+
 
 }

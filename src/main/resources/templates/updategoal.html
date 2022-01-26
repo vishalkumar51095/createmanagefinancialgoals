@@ -15,17 +15,19 @@
     <title>home</title>
 </head>
 <body>
-<h1>Add New User</h1>
-<form method="post" action="/userpage">
+<h1>Home Page</h1>
+<form method="post" action="/updategoaldetails">
     <input
             type="hidden"
             th:name="${_csrf.parameterName}"
             th:value="${_csrf.token}" />
-    Name<input type="text" name="name">
-    <br>
     userName<input type="text" name="userName">
     <br>
     Password<input type="text" name="password">
+    <br>
+    goal<input type="text" name="goal">
+    <br>
+    Update Amount<input type="text" name="updategoal">
     <br>
     <input type="submit" value="Go">
 

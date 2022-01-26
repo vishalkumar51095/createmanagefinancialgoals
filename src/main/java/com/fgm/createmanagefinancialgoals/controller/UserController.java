@@ -7,26 +7,36 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class UserController {
-    @RequestMapping("/home")
+    @RequestMapping("/userregistration")
     public String home() {
-        return "home";
+        return "userregistration";
     }
     @RequestMapping("/goalcreate")
     public String goal(){
         return "goalcreate";
     }
-    @RequestMapping("getInstallment")
+    @RequestMapping("payinstallment")
     public String insta(){
-        return "installment";
+        return "payinstallment";
     }
-    @RequestMapping("/getdetails")
-    public String getdetails(){
-        return "getdetails";
+    @RequestMapping("/wishlist")
+    public String wishlist(){
+        return "wishlist";
     }
 
-    @RequestMapping("/getInstall")
+    @RequestMapping("/listofpaidinstallments")
     public String installments(){
-        return "getinstall";
+        return "listofpaidinstallments";
+    }
+
+    @RequestMapping("/updategoal")
+    public String updategoal(){
+        return "updategoal";
+    }
+
+    @RequestMapping("/deletegoal")
+    public String deletegoal(){
+        return "deletegoal";
     }
 
 

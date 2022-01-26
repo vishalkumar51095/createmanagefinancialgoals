@@ -12,20 +12,20 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>home</title>
+    <title>User Registration Page </title>
 </head>
 <body>
-<h1>Home Page</h1>
-<form method="post" action="/installment">
+<h1>Add New User</h1>
+<form method="post" action="/userpage">
     <input
             type="hidden"
             th:name="${_csrf.parameterName}"
             th:value="${_csrf.token}" />
+    Name<input type="text" name="name">
+    <br>
     userName<input type="text" name="userName">
     <br>
     Password<input type="text" name="password">
-    <br>
-    Installments Amount<input type="text" name="instaAmount">
     <br>
     <input type="submit" value="Go">
 

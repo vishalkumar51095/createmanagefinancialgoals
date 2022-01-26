@@ -13,9 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -45,9 +42,11 @@ public class CreateGoalRestController {
             return "" + e;
         }
     }
-    @PostMapping("/installment")
+    @PostMapping("/paidinstallment")
     public String Installment(@RequestParam(value = "userName", defaultValue = "", required = false) String userName, @RequestParam(value = "password", defaultValue = "", required = false) String password, @RequestParam(value = "instaAmount", defaultValue = "0", required = false) int instaAmount) {
         try{
+            if(instaAmount<100 || instaAmount>500)
+                throw  new Exception("Invalid amount " + instaAmount);
             ApplicationContext context = CreatemanagefinancialgoalsApplication.context;
             UserRepository userRepository = context.getBean(UserRepository.class);
             List<User> userList = userRepository.findByUserNameAndPassword(userName, password);
@@ -93,8 +92,8 @@ public class CreateGoalRestController {
         }
     }
 
-    @PostMapping("/showdetails")
-    public String showdetails(@RequestParam(value = "userName", defaultValue = "0", required = false) String userName, @RequestParam(value = "password", defaultValue = "0", required = false) String password) throws Exception {
+    @PostMapping("/wishlistdetails")
+    public String wishlistdetails(@RequestParam(value = "userName", defaultValue = "0", required = false) String userName, @RequestParam(value = "password", defaultValue = "0", required = false) String password){
        try {
            ApplicationContext context = CreatemanagefinancialgoalsApplication.context;
            UserRepository userRepository = context.getBean(UserRepository.class);
@@ -111,7 +110,7 @@ public class CreateGoalRestController {
        }
     }
 
-    @PostMapping("/showinstallments")
+    @PostMapping("/listofpaidinstallmentsdetails")
     public String showinstallments(@RequestParam(value = "userName", defaultValue = "0", required = false) String userName, @RequestParam(value = "password", defaultValue = "0", required = false) String password){
         try{
             ApplicationContext context = CreatemanagefinancialgoalsApplication.context;
@@ -139,9 +138,56 @@ public class CreateGoalRestController {
             return ""+e;
         }
     }
+    @PostMapping("/updategoaldetails")
+    public String updategoaldetail(@RequestParam(value = "userName", defaultValue = "0", required = false) String userName, @RequestParam(value = "password", defaultValue = "0", required = false) String password, @RequestParam(value = "goal", defaultValue = "0", required = false) String goal, @RequestParam(value = "updategoal", defaultValue = "0", required = false) int updategoal){
+        try{
+            ApplicationContext context = CreatemanagefinancialgoalsApplication.context;
+            UserRepository userRepository = context.getBean(UserRepository.class);
+            List<User> userList = userRepository.findByUserNameAndPassword(userName, password);
+            if (userList.size() <= 0)
+                throw new Exception("Invalid username or password " + userName + "  " + password );
+            GoalsRepository goalsRepository=context.getBean(GoalsRepository.class);
+            List<Goals> goalsList=goalsRepository.findByUserNameAndGoal(userName,goal);
+            if(goalsList.size()<=0)
+                throw new Exception("Invalid goal " + goal);
+            Goals goals=goalsList.get(0);
+            goals.setGoalTotal(updategoal);
+            goalsRepository.save(goals);
+
+            Gson gson=new Gson();
+            return gson.toJson(goals);
+
+             //return  "params " + userName + "," + password + "," + goal + "," + updategoal;
+        }
+        catch (Exception e){
+            return ""+e;
+        }
+    }
+    @PostMapping("/deletegoaldetail")
+    public String deletegoaldetail(@RequestParam(value = "userName", defaultValue = "0", required = false) String userName, @RequestParam(value = "password", defaultValue = "0", required = false) String password, @RequestParam(value = "goal", defaultValue = "0", required = false) String goal){
+        try {
+            ApplicationContext context = CreatemanagefinancialgoalsApplication.context;
+            UserRepository userRepository = context.getBean(UserRepository.class);
+            List<User> userList = userRepository.findByUserNameAndPassword(userName, password);
+            if (userList.size() <= 0)
+                throw new Exception("Invalid username or password " + userName + "  " + password );
+            GoalsRepository goalsRepository=context.getBean(GoalsRepository.class);
+            List<Goals> goalsList=goalsRepository.findByUserNameAndGoal(userName,goal);
+            if(goalsList.size()<=0)
+                throw new Exception("Invalid goal " + goal);
+            Goals goals=goalsList.get(0);
+            goalsRepository.delete(goals);
+
+            Gson gson=new Gson();
+            return gson.toJson(goals);
+        }
+        catch (Exception e){
+            return ""+e;
+        }
+    }
 
 
-    @PostMapping("/hi")
+        @PostMapping("/hi")
     public String hi() {
         return "hi";
     }

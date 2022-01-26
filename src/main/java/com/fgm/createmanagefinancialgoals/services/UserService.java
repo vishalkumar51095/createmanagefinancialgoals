@@ -27,6 +27,7 @@ public class UserService {
         return (User) repo.findByUserNameAndPassword(userName,password);
     }
 
+
     public void delete(int id){
         repo.deleteById(id);
     }
